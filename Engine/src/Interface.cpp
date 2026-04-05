@@ -10,7 +10,9 @@ int InterfaceClass::Init(GLFWwindow* Window)
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
     Interface.Window = Window;
-    Interface.Windows["Test"] = []() { Interface.Test(); };
+    Interface.Windows["File Manager"] = []() { Interface.FileManager(); };
+    Interface.Windows["Menu Bar"] = []() { Interface.MenuBar(); };
+    Interface.Windows["Assets"] = []() { Interface.Assets(); };
     return 1;
 }
 
@@ -22,12 +24,79 @@ void InterfaceClass::CleanUp()
     ImGui::DestroyContext();
 }
 
-void InterfaceClass::Test()
+void InterfaceClass::GetWindowSize(int* w, int* h)
 {
-    ImGui::Begin("Debug");
-    ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    *w = mode->width;
+    *h = mode->height;
+}
+
+void InterfaceClass::MenuBar()
+{
+    if (ImGui::BeginMainMenuBar()) 
+    {
+        if (ImGui::BeginMenu("File")) 
+        {
+            if (ImGui::MenuItem("New")) 
+            { 
+
+            }
+            if (ImGui::MenuItem("Open", "Ctrl+O")) 
+            { 
+
+            }
+            if (ImGui::MenuItem("Save", "Ctrl+S")) 
+            {
+
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Interface")) 
+        {
+            for(auto& i : Interface.Windows)
+            {
+                if(!i.first.find("Menu Bar"))
+                    continue;
+                if (ImGui::MenuItem(i.first.c_str(), i.second != nullptr ? "X" : "")) 
+                { 
+                    if(i.second != nullptr)
+                    {
+                        Interface.HiddenWindows[i.first] =  i.second;
+                        i.second = nullptr;
+                    } else 
+                    {
+                        i.second = Interface.HiddenWindows[i.first];
+                        Interface.HiddenWindows.erase(i.first);
+                    }
+                }
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+}
+
+void InterfaceClass::FileManager()
+{
+    int w = 0, h = 0;
+    Interface.GetWindowSize(&w, &h);
+    ImGui::SetNextWindowPos({0, 25});
+    ImGui::SetNextWindowSize({430, (float)h});
+    ImGui::Begin("File Manager", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImGui::End();
 }
+
+void InterfaceClass::Assets()
+{
+    int w = 0, h = 0;
+    Interface.GetWindowSize(&w, &h);
+    ImGui::SetNextWindowPos({w - 430, 25});
+    ImGui::SetNextWindowSize({430, (float)h});
+    ImGui::Begin("Assets", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::End();
+}
+
 
 void InterfaceClass::Update()
 {
@@ -36,7 +105,8 @@ void InterfaceClass::Update()
     ImGui::NewFrame();
     for(auto& Window : Interface.Windows)
     {
-        Window.second();
+        if(Window.second != nullptr)
+            Window.second();
     }
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

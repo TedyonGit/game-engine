@@ -13,8 +13,12 @@ int WindowClass::Create()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    int width = 0, height = 0;
+    const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-    windowobj = glfwCreateWindow(1280, 720, "MyEngine", nullptr, nullptr);
+    width = mode->width;
+    height = mode->height;
+    windowobj = glfwCreateWindow(width, height, "MyEngine", nullptr, nullptr);
     if (!windowobj)
     {
         std::cerr << "Failed to create window\n";
