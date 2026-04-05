@@ -9,6 +9,8 @@ int InterfaceClass::Init(GLFWwindow* Window)
     ImGui_ImplGlfw_InitForOpenGL(Window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
+    ImGui::GetIO().IniFilename = nullptr;
+	ImGui::GetIO().LogFilename = nullptr;
     Interface.Window = Window;
     Interface.Windows["File Manager"] = []() { Interface.FileManager(); };
     Interface.Windows["Menu Bar"] = []() { Interface.MenuBar(); };
