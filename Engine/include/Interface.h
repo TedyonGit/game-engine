@@ -21,6 +21,7 @@ class InterfaceClass
         void FileManager();
         void MenuBar();
         void Assets();
+        void Output();
         GLFWwindow* Window = nullptr;
         std::unordered_map<std::string, std::function<void()>> Windows;
         std::unordered_map<std::string, std::function<void()>> HiddenWindows;

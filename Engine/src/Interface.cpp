@@ -15,6 +15,7 @@ int InterfaceClass::Init(GLFWwindow* Window)
     Interface.Windows["File Manager"] = []() { Interface.FileManager(); };
     Interface.Windows["Menu Bar"] = []() { Interface.MenuBar(); };
     Interface.Windows["Assets"] = []() { Interface.Assets(); };
+    Interface.Windows["Output"] = []() { Interface.Output(); };
     return 1;
 }
 
@@ -77,6 +78,16 @@ void InterfaceClass::MenuBar()
         }
         ImGui::EndMainMenuBar();
     }
+}
+
+void InterfaceClass::Output()
+{
+    int w = 0, h = 0;
+    Interface.GetWindowSize(&w, &h);
+    ImGui::SetNextWindowPos({430, h - 300});
+    ImGui::SetNextWindowSize({w - 860, 300});
+    ImGui::Begin("Output", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::End();
 }
 
 void InterfaceClass::FileManager()
