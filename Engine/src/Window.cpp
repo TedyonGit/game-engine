@@ -13,19 +13,15 @@ int WindowClass::Create()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    int width = 0, height = 0;
     const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-    width = mode->width;
-    height = mode->height;
-    windowobj = glfwCreateWindow(width, height, "MyEngine", nullptr, nullptr);
+    windowobj = glfwCreateWindow(mode->width, mode->height, "Game Engine", nullptr, nullptr);
+    
     if (!windowobj)
     {
         std::cerr << "Failed to create window\n";
         glfwTerminate();
         return -1;
     }
-
     glfwMakeContextCurrent(windowobj);
     glfwSwapInterval(1);
 

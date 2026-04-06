@@ -1,6 +1,7 @@
 #include <Interface.h>
 
 InterfaceClass Interface;
+UILayout Layout;
 
 int InterfaceClass::Init(GLFWwindow* Window)
 {
@@ -16,6 +17,7 @@ int InterfaceClass::Init(GLFWwindow* Window)
     Interface.Windows["Menu Bar"] = []() { Interface.MenuBar(); };
     Interface.Windows["Assets"] = []() { Interface.Assets(); };
     Interface.Windows["Output"] = []() { Interface.Output(); };
+    Interface.Windows["Scene"] = []() { Interface.Scene(); };
     return 1;
 }
 
@@ -29,10 +31,7 @@ void InterfaceClass::CleanUp()
 
 void InterfaceClass::GetWindowSize(int* w, int* h)
 {
-    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-    *w = mode->width;
-    *h = mode->height;
+    glfwGetWindowSize(Interface.Window, w, h);
 }
 
 void InterfaceClass::MenuBar()
@@ -49,10 +48,12 @@ void InterfaceClass::MenuBar()
             { 
 
             }
+            ImGui::BeginDisabled(true);
             if (ImGui::MenuItem("Save", "Ctrl+S")) 
             {
 
             }
+            ImGui::EndDisabled();
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Interface")) 
@@ -82,37 +83,45 @@ void InterfaceClass::MenuBar()
 
 void InterfaceClass::Output()
 {
-    int w = 0, h = 0;
-    Interface.GetWindowSize(&w, &h);
-    ImGui::SetNextWindowPos({430, h - 300});
-    ImGui::SetNextWindowSize({w - 860, 300});
-    ImGui::Begin("Output", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetNextWindowPos (Layout.Pos(0.0f, 0.75f));
+    ImGui::SetNextWindowSize(Layout.Size(1.f, 0.25f));
+    ImGui::Begin("Output", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    {
+        ImGui::Text("Nothing to show...");
+    }
+    ImGui::End();
+}
+
+void InterfaceClass::Scene()
+{
+    ImGui::SetNextWindowPos (Layout.Pos(0.201f, 0.025f));
+    ImGui::SetNextWindowSize(Layout.Size(0.599f, 0.72f));
+    ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    {
+    }
     ImGui::End();
 }
 
 void InterfaceClass::FileManager()
 {
-    int w = 0, h = 0;
-    Interface.GetWindowSize(&w, &h);
-    ImGui::SetNextWindowPos({0, 25});
-    ImGui::SetNextWindowSize({430, (float)h});
-    ImGui::Begin("File Manager", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetNextWindowPos(Layout.Pos(0.0f, 0.025f));
+    ImGui::SetNextWindowSize(Layout.Size(0.20f, 0.72f));
+    ImGui::Begin("File Manager", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     ImGui::End();
 }
 
 void InterfaceClass::Assets()
 {
-    int w = 0, h = 0;
-    Interface.GetWindowSize(&w, &h);
-    ImGui::SetNextWindowPos({w - 430, 25});
-    ImGui::SetNextWindowSize({430, (float)h});
-    ImGui::Begin("Assets", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetNextWindowPos(Layout.Pos(0.80f, 0.025f));
+    ImGui::SetNextWindowSize(Layout.Size(0.20f, 0.72f));
+    ImGui::Begin("Assets", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     ImGui::End();
 }
 
 
 void InterfaceClass::Update()
 {
+    Layout.Update();
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();

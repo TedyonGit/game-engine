@@ -6,13 +6,13 @@
 
 class WindowClass
 {
-public:
-    int Create();
-    int Update();
-    bool ShouldRun()  const;
-    void BeginFrame();
-    void EndFrame();
-    GLFWwindow* windowobj = nullptr;
+    public:
+        int Create();
+        int Update();
+        bool ShouldRun()  const;
+        void BeginFrame();
+        void EndFrame();
+        GLFWwindow* windowobj = nullptr;
 };
 
 extern WindowClass Window;

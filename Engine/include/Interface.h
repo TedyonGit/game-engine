@@ -22,9 +22,27 @@ class InterfaceClass
         void MenuBar();
         void Assets();
         void Output();
+        void Scene();
         GLFWwindow* Window = nullptr;
         std::unordered_map<std::string, std::function<void()>> Windows;
         std::unordered_map<std::string, std::function<void()>> HiddenWindows;
 };
-
 extern InterfaceClass Interface;
+
+struct UILayout
+{
+    int w = 0, h = 0;
+
+    void Update()
+    {
+        Interface.GetWindowSize(&w, &h);
+    }
+
+    float X(float ratio) { return w * ratio; }
+    float Y(float ratio) { return h * ratio; }
+
+    ImVec2 Pos(float xRatio, float yRatio)  { return { X(xRatio), Y(yRatio) }; }
+    ImVec2 Size(float wRatio, float hRatio) { return { X(wRatio), Y(hRatio) }; }
+};
+
+extern UILayout Layout;
