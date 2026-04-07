@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#include "imgui_internal.h"
 class CameraClass
 {
 public:
@@ -10,9 +10,9 @@ public:
     glm::vec3 Up = {  0.0f, 1.0f,  0.0f };
 
     float Yaw = -90.0f;
-    float Pitch =   0.0f;
-    float Speed =   5.0f;
-    float Fov =  45.0f;
+    float Pitch = 0.0f;
+    float Speed = 30.0f;
+    float Fov = 45.0f;
 
     glm::mat4 GetView() const
     {
@@ -42,11 +42,18 @@ public:
             return;
             
         glm::vec3 right = glm::normalize(glm::cross(Front, Up));
+        glm::vec3 target = Position;
 
-        if (key == 87) Position += Front * Speed * deltaTime;
-        if (key == 83) Position -= Front * Speed * deltaTime;
-        if (key == 65) Position -= right * Speed * deltaTime;
-        if (key == 68) Position += right * Speed * deltaTime;
+        switch(key)
+        {
+            case 'W': target -= Up * Speed * deltaTime; break;
+            case 'S': target += Up * Speed * deltaTime; break;
+            case 'A': target -= right * Speed * deltaTime; break;
+            case 'D': target += right * Speed * deltaTime; break;
+            default: break;
+        }
+
+        Position = ImLerp(Position, target, 15.0f * deltaTime);
     }
 };
 

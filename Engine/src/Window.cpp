@@ -41,7 +41,7 @@ void WindowClass::WndProc(GLFWwindow* window, int key, int scancode, int action,
 {
     if(!window || window == nullptr)
         return;
-    std::cout << key << std::endl;
+
     switch (key) {
         case 'W': case 'A': case 'S': case 'D': Camera.Move(key, Window.DeltaTime, Interface.SceneSelected); break;
         default: break;

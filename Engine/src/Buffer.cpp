@@ -1,6 +1,5 @@
 #include <Buffer.h>
 
-// ── Vertex Buffer ────────────────────────────────────────────
 VertexBuffer::VertexBuffer(float* vertices, unsigned int size)
 {
     glGenBuffers(1, &ID);
@@ -16,7 +15,6 @@ VertexBuffer::~VertexBuffer()
 void VertexBuffer::Bind()   const { glBindBuffer(GL_ARRAY_BUFFER, ID); }
 void VertexBuffer::Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0);  }
 
-// ── Index Buffer ─────────────────────────────────────────────
 IndexBuffer::IndexBuffer(unsigned int* indices, unsigned int count)
     : Count(count)
 {

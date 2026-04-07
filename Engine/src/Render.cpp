@@ -1,0 +1,45 @@
+#include <Render.h>
+
+RenderClass Render;
+
+void RenderClass::Update()
+{
+    shader->Bind();
+    shader->SetMat4("View",       Camera.GetView());
+    float aspect = (Interface.viewport->Height > 0)
+        ? (float)Interface.viewport->Width / Interface.viewport->Height
+        : 1280.0f / 720.0f;
+
+    shader->SetMat4("Projection", Camera.GetProjection(aspect));
+    shader->SetMat4("Model",      glm::mat4(1.0f));
+
+    Interface.viewport->Bind();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES, ib->Count, GL_UNSIGNED_INT, nullptr);
+    Interface.viewport->Unbind();
+}
+
+void RenderClass::Init()
+{
+     float vertices[] = {
+        -0.2f, 0.2f, 0.0f,
+         0.2f, 0.2f, 0.0f,
+         0.2f, -0.2f, 0.0f,
+         -0.2f, -0.2f, 0.0f,
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+    vb = new VertexBuffer(vertices, sizeof(vertices));
+    ib = new IndexBuffer(indices, 6);
+    va = new VertexArray();
+    va->AddBuffer(*vb, 0, 3, 3 * sizeof(float), 0);
+
+    shader = new Shader("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+    shader->Bind();
+    va->Bind();
+    ib->Bind();
+    shader->SetVec3("Color", glm::vec3(1.0f, 1.0f, 1.0f));
+}

@@ -96,9 +96,15 @@ void InterfaceClass::Output()
 
 void InterfaceClass::Scene()
 {
-    ImGui::SetNextWindowPos (Layout.Pos(0.201f, 0.025f));
-    ImGui::SetNextWindowSize(Layout.Size(0.599f, 0.72f));
+    ImVec2 pos, size;
+    pos = Layout.Pos(0.201f, 0.025f);
+    size = Layout.Size(0.599f, 0.72f);
+
+    viewport->Width = size.x;
+    viewport->Height = size.y;
     
+    ImGui::SetNextWindowPos (pos);
+    ImGui::SetNextWindowSize(size);
     ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     {
         Interface.SceneSelected = ImGui::IsWindowFocused();        
