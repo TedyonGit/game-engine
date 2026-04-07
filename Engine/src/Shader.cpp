@@ -11,19 +11,16 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     const char*   vCode   = vertSrc.c_str();
     const char*   fCode   = fragSrc.c_str();
 
-    // Compile vertex
     unsigned int vert = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vert, 1, &vCode, nullptr);
     glCompileShader(vert);
     CheckErrors(vert, "VERTEX");
 
-    // Compile fragment
     unsigned int frag = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(frag, 1, &fCode, nullptr);
     glCompileShader(frag);
     CheckErrors(frag, "FRAGMENT");
 
-    // Link
     ID = glCreateProgram();
     glAttachShader(ID, vert);
     glAttachShader(ID, frag);

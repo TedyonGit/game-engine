@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <FrameBuffer.h>
 #include <GLFW/glfw3.h>
 
 class InterfaceClass
@@ -17,6 +18,8 @@ class InterfaceClass
         void Update();
         void CleanUp();
         void GetWindowSize(int* w, int* h);
+        Framebuffer* viewport;
+        bool SceneSelected = false;
     private:
         void FileManager();
         void MenuBar();

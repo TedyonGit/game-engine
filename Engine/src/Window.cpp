@@ -1,6 +1,6 @@
 #include <Window.h>
 
-WindowClass Window;   // ← defined here, once
+WindowClass Window;
 
 int WindowClass::Create()
 {
@@ -9,7 +9,7 @@ int WindowClass::Create()
         std::cerr << "Failed to init GLFW\n";
         return -1;
     }
-
+        
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -22,6 +22,7 @@ int WindowClass::Create()
         glfwTerminate();
         return -1;
     }
+    glfwSetKeyCallback(windowobj, WindowClass::WndProc);
     glfwMakeContextCurrent(windowobj);
     glfwSwapInterval(1);
 
@@ -34,6 +35,17 @@ int WindowClass::Create()
     std::cout << "OpenGL " << glGetString(GL_VERSION) << "\n";
     std::cout << "GPU: "   << glGetString(GL_RENDERER) << "\n";
     return 0;
+}
+
+void WindowClass::WndProc(GLFWwindow* window, int key, int scancode, int action, int mods) 
+{
+    if(!window || window == nullptr)
+        return;
+    std::cout << key << std::endl;
+    switch (key) {
+        case 'W': case 'A': case 'S': case 'D': Camera.Move(key, Window.DeltaTime, Interface.SceneSelected); break;
+        default: break;
+    }
 }
 
 int WindowClass::Update()
@@ -60,6 +72,9 @@ bool WindowClass::ShouldRun() const
 
 void WindowClass::BeginFrame()
 {
+    float currentFrame = (float)glfwGetTime();
+    DeltaTime = currentFrame - LastFrame;
+    LastFrame = currentFrame;
     glfwPollEvents();
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

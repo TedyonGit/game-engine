@@ -14,7 +14,6 @@ public:
     void Bind()   const;
     void Unbind() const;
 
-    // Uniforms
     void SetInt  (const std::string& name, int value)         const;
     void SetFloat(const std::string& name, float value)       const;
     void SetVec3 (const std::string& name, const glm::vec3& v) const;

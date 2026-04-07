@@ -12,6 +12,8 @@ int InterfaceClass::Init(GLFWwindow* Window)
     ImGui::StyleColorsDark();
     ImGui::GetIO().IniFilename = nullptr;
 	ImGui::GetIO().LogFilename = nullptr;
+    ImVec2 SceneSize = Layout.Size(0.599f, 0.72f);
+    Interface.viewport = new Framebuffer(SceneSize.x, SceneSize.y);
     Interface.Window = Window;
     Interface.Windows["File Manager"] = []() { Interface.FileManager(); };
     Interface.Windows["Menu Bar"] = []() { Interface.MenuBar(); };
@@ -96,8 +98,13 @@ void InterfaceClass::Scene()
 {
     ImGui::SetNextWindowPos (Layout.Pos(0.201f, 0.025f));
     ImGui::SetNextWindowSize(Layout.Size(0.599f, 0.72f));
+    
     ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     {
+        Interface.SceneSelected = ImGui::IsWindowFocused();        
+        ImVec2 size = ImGui::GetContentRegionAvail();
+        Interface.viewport->Resize((int)size.x, (int)size.y);
+        ImGui::Image((ImTextureID)(intptr_t)viewport->TextureID, size);
     }
     ImGui::End();
 }
