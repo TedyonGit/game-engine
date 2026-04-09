@@ -89,7 +89,15 @@ void InterfaceClass::Output()
     ImGui::SetNextWindowSize(Layout.Size(1.f, 0.25f));
     ImGui::Begin("Output", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     {
-        ImGui::Text("Nothing to show...");
+        if(Logs.empty())
+            ImGui::Text("Nothing to show...");
+        else
+        {
+            for(auto& d : Logs)
+            {
+                ImGui::Text(d.c_str());
+            }
+        }
     }
     ImGui::End();
 }
@@ -120,6 +128,35 @@ void InterfaceClass::FileManager()
     ImGui::SetNextWindowPos(Layout.Pos(0.0f, 0.025f));
     ImGui::SetNextWindowSize(Layout.Size(0.20f, 0.72f));
     ImGui::Begin("File Manager", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    if(ImGui::Button("Add"))
+    {
+        std::string Name = "Object ";
+        Name.append(std::to_string(Render.mapObjects.size() + 1));
+        ObjectClass* Obj = new ObjectClass(Interface.viewport);
+        Obj->Position.y += 0.42f * Render.mapObjects.size(); 
+        Obj->Init();
+        Render.Add(Name, Obj);
+        Name.append(" added to the file manager.");
+        Logs.push_back(Name);
+    }
+    std::string toDelete = "";
+
+    for (auto& obj : Render.mapObjects)
+    {
+        ImGui::BeginGroup();
+        ImGui::Text(obj.first.c_str());
+        ImGui::SameLine();
+        if (ImGui::Button(("Delete##" + obj.first).c_str()))
+            toDelete = obj.first;
+        ImGui::EndGroup();
+    }
+    if (!toDelete.empty())
+    {
+        Render.mapObjects[toDelete]->Delete();
+        Render.mapObjects.erase(toDelete);
+        toDelete.append(" deleted from the file manager.");
+        Logs.push_back(toDelete);
+    }
     ImGui::End();
 }
 

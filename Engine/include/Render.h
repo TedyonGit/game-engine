@@ -1,19 +1,16 @@
-#include <Shader.h>
-#include <Buffer.h>
-#include <VertexArray.h>
+#pragma once
+#include <iostream>
+#include <Object.h>
+#include <unordered_map>
 #include <Interface.h>
-#include <Camera.h>
 
 class RenderClass
 {
     public:
         void Update();
         void Init();
-    private:
-        VertexBuffer* vb;
-        IndexBuffer* ib;
-        VertexArray* va;
-        Shader* shader;
+        void Add(std::string Key, ObjectClass* value);
+        std::unordered_map<std::string, ObjectClass*> mapObjects;
 };
 
 extern RenderClass Render;

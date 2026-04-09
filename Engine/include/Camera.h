@@ -25,8 +25,7 @@ public:
     }
 
     void UpdateDirection(float dx, float dy)
-    {
-        Yaw   += dx * 0.1f;
+    {        Yaw   += dx * 0.1f;
         Pitch  = glm::clamp(Pitch + dy * 0.1f, -89.0f, 89.0f);
 
         Front = glm::normalize(glm::vec3(

@@ -6,10 +6,10 @@
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
-    std::string   vertSrc = ReadFile(vertexPath);
-    std::string   fragSrc = ReadFile(fragmentPath);
-    const char*   vCode   = vertSrc.c_str();
-    const char*   fCode   = fragSrc.c_str();
+    std::string vertSrc = ReadFile(vertexPath);
+    std::string fragSrc = ReadFile(fragmentPath);
+    const char* vCode = vertSrc.c_str();
+    const char* fCode = fragSrc.c_str();
 
     unsigned int vert = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vert, 1, &vCode, nullptr);

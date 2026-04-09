@@ -8,6 +8,8 @@
 #include <imgui_impl_opengl3.h>
 #include <FrameBuffer.h>
 #include <GLFW/glfw3.h>
+#include <Render.h>
+
 
 class InterfaceClass
 {
@@ -29,6 +31,7 @@ class InterfaceClass
         GLFWwindow* Window = nullptr;
         std::unordered_map<std::string, std::function<void()>> Windows;
         std::unordered_map<std::string, std::function<void()>> HiddenWindows;
+        std::vector <std::string> Logs;
 };
 extern InterfaceClass Interface;
 
